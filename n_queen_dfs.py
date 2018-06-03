@@ -54,4 +54,5 @@ def n_queen_dfs(node):
 
 
 size = int(input("Enter size: "))
-print("The solution is: \n", n_queen_dfs(Node(np.zeros(size * size).reshape(size, size))).state.board)
+result = n_queen_dfs(Node(np.zeros(size * size).reshape(size, size)))
+print("The solution is: \n", result.state.board if result else "No solution")
