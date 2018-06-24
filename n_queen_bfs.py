@@ -63,7 +63,7 @@ while frontier:
             # as python works all in reference but we need to compare board values
             # of child node and board configuration in frontier and explored
             if not any([np.array_equal(child.state.board, elem.state.board) for elem in frontier]) \
-                    or not any([np.array_equal(child.state.board, elem.state.board) for elem in frontier]):
+                    or not any([np.array_equal(child.state.board, elem.state.board) for elem in explored]):
                 if child.state.goal_state():
                     print("Solution found. Solution is: ")
                     print(child.state.board)
