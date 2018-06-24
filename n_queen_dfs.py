@@ -29,10 +29,13 @@ class Node:
         self.parent = parent
 
 
-def n_queen_dfs(node):
+def n_queen_dfs(node, explored=None):
     if node.state.goal_state():
         return node
     else:
+        if explored is None:
+            explored = []
+        explored.append(node)
         for i in range(node.state.board_size):
             for j in range(node.state.board_size):
                 if node.state.board[i][j] != 0 or not node.state.is_safe(i, j):
@@ -45,11 +48,13 @@ def n_queen_dfs(node):
 
                 if child.state.goal_state():
                     return child
+                elif any([np.array_equal(child.state.board, elem.state.board) for elem in explored]):
+                    continue
                 else:
-                    result = n_queen_dfs(child)
-                    if not result:
+                    result_child = n_queen_dfs(child)
+                    if not result_child:
                         continue
-                    return result
+                    return result_child
     return None
 
 
