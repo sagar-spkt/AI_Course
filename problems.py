@@ -8,6 +8,12 @@ class NQueen:
         self.parent = parent
         self.board_size = len(self.board)
 
+    @property
+    def path_cost_from_root(self):
+        if not self.parent:
+            return 0
+        return self.parent.path_cost_from_root + 1
+
     def display(self):
         print(self.board)
 
@@ -38,6 +44,12 @@ class NQueen:
 
     def is_in(self, array_list):
         return any([np.array_equal(self.board, iter_item.board) for iter_item in array_list])
+
+    def position_in(self, array_list):
+        try:
+            return [np.array_equal(self.board, iter_item.board) for iter_item in array_list].index(True)
+        except ValueError:
+            return None
 
     def generate_successors(self):
         successors = []
