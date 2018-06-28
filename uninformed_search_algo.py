@@ -96,26 +96,20 @@ def depth_limit_search(node, limit, explored=None):
             return {'cutoff': False, 'is_solution': False, 'solution_node': None}
 
 
-def uniform_cost_search(root_node, eval_func=None):
+def uniform_cost_search(root_node):
     """
     root node must have methods like
     goal_test(),
     generate_successors(),
     membership test in iterator
     :param root_node: should have property path cost from root
-    :param eval_func: custom evaluation function to sort frontier
-        defaults to path cost from root
     :return: solution node if found else none
     """
     frontier = [root_node]
     explored = []
 
-    if not eval_func:
-        def eval_func(x):
-            return x.path_cost_from_root
-
     while frontier:
-        frontier.sort(key=eval_func)
+        frontier.sort(key=lambda x: x.path_cost_from_root())
         node = frontier.pop(0)
         if node.goal_test():
             return node
@@ -127,7 +121,7 @@ def uniform_cost_search(root_node, eval_func=None):
                 frontier.append(successor)
             elif successor.is_in(frontier):
                 position = successor.position_in(frontier)
-                if eval_func(frontier[position]) > eval_func(successor):
+                if frontier[position].path_cost_from_root() > successor.path_cost_from_root():
                     frontier.pop(position)
                     frontier.append(successor)
     return None

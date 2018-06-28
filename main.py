@@ -10,7 +10,7 @@ from uninformed_search_algo import (
 
 if __name__ == '__main__':
     size = int(input('Enter size: '))
-    solution = uniform_cost_search(NQueen(np.zeros(size * size).reshape(size, size)))
+    solution = uniform_cost_search(NQueen(np.zeros((size, size))))
     if solution:
         solution.display()
     else:
