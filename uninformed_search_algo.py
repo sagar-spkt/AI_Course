@@ -110,11 +110,12 @@ def uniform_cost_search(root_node, eval_func=None):
     frontier = [root_node]
     explored = []
 
+    if not eval_func:
+        def eval_func(x):
+            return x.path_cost_from_root
+
     while frontier:
-        if eval_func:
-            frontier.sort(key=eval_func)
-        else:
-            frontier.sort(key=lambda x: x.path_cost_from_root)
+        frontier.sort(key=eval_func)
         node = frontier.pop(0)
         if node.goal_test():
             return node
@@ -126,7 +127,7 @@ def uniform_cost_search(root_node, eval_func=None):
                 frontier.append(successor)
             elif successor.is_in(frontier):
                 position = successor.position_in(frontier)
-                if frontier[position].path_cost_from_root > successor.path_cost_from_root:
+                if eval_func(frontier[position]) > eval_func(successor):
                     frontier.pop(position)
                     frontier.append(successor)
     return None
