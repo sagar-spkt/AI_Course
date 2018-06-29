@@ -90,11 +90,11 @@ class NQueen:
         """
         near_states_list = []
         for col in range(self.board_size):
-            for row in list(np.where(self.board[:, col] == 0)):
+            for row in list(np.where(self.board[:, col] == 0)[0]):
                 near_state = copy.deepcopy(self)
                 near_state.parent = self
                 near_state.board[:, col] = np.zeros(self.board_size)
-                near_state.board[row, col] = 1
+                near_state.board[row][col] = 1
                 near_states_list.append(near_state)
         return near_states_list
 

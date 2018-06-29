@@ -7,12 +7,15 @@ from uninformed_search_algo import (
     depth_limit_search,
     uniform_cost_search,
 )
+from informed_search_algo import (
+    astar_search,
+)
 
 
 if __name__ == '__main__':
     size = int(input('Enter size: '))
     t = time.time()
-    solution = uniform_cost_search(NQueen(np.zeros((size, size))))
+    solution = astar_search(NQueen(size=size))
     if solution:
         solution.display()
     else:

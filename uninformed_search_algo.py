@@ -96,32 +96,45 @@ def depth_limit_search(node, limit, explored=None):
             return {'cutoff': False, 'is_solution': False, 'solution_node': None}
 
 
-def uniform_cost_search(root_node):
+def uniform_cost_search(root_node, eval_func=None, successor_generator=None):
     """
     root node must have methods like
     goal_test(),
     generate_successors(),
     membership test in iterator
     :param root_node: should have property path cost from root
+    :param eval_func: custom evaluation function to sort frontier
+        defaults to path cost from root
+    :param successor_generator: successor generator defaults to iterative state formulation
+        can be used in complete state formulation
     :return: solution node if found else none
     """
+    # default eval_func() and successor_generator()
+    if not eval_func:
+        def eval_func(x):
+            return x.path_cost_from_root()
+
+    if not successor_generator:
+        def successor_generator(x):
+            return x.generate_successors()
+
     frontier = [root_node]
     explored = []
 
     while frontier:
-        frontier.sort(key=lambda x: x.path_cost_from_root())
+        frontier.sort(key=eval_func)
         node = frontier.pop(0)
         if node.goal_test():
             return node
         explored.append(node)
-        for successor in node.generate_successors():
+        for successor in successor_generator(node):
             if not successor:  # checks for no successor
                 continue
             if not (successor.is_in(frontier) and successor.is_in(explored)):
                 frontier.append(successor)
             elif successor.is_in(frontier):
                 position = successor.position_in(frontier)
-                if frontier[position].path_cost_from_root() > successor.path_cost_from_root():
+                if eval_func(frontier[position]) > eval_func(successor):
                     frontier.pop(position)
                     frontier.append(successor)
     return None
