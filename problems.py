@@ -19,12 +19,12 @@ class NQueen:
 
     def path_cost_from_root(self):
         """
-        Path cost for this problem is unit
+        Path cost for this problem is not defined
         :return:
         """
         if not self.parent:
             return 0
-        return self.parent.path_cost_from_root() + 1
+        return self.parent.path_cost_from_root()
 
     def heuristic(self):
         attack_counter = 0
