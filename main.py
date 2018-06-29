@@ -10,6 +10,7 @@ from uninformed_search_algo import (
 from informed_search_algo import (
     astar_search,
     hill_climbing,
+    simulated_annealing,
 )
 
 
@@ -17,7 +18,7 @@ if __name__ == '__main__':
     size = int(input('Enter size: '))
     t = time.time()
     try:
-        solution = hill_climbing(NQueen(size=size), maximization=False)
+        solution = simulated_annealing(NQueen(size=size))
         solution.display()
         print("Heuristics value of solution: ", solution.heuristic())
     except RecursionError as err:

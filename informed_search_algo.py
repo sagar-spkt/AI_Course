@@ -1,3 +1,6 @@
+import itertools
+import math
+import random
 from uninformed_search_algo import uniform_cost_search
 
 
@@ -43,6 +46,38 @@ def hill_climbing(current_node, maximization=False):
         current_node = best_neighbour
 
 
-def simulated_annealing():
-    pass
+def exp_schedule(k=4, alpha=0.001, limit=20000):
+    """
+    Possible Scheduling functions:
+    T(t) = 1/1+math.log(t)
+    T(t) = 2 *(1-1/(1+math.exp(-t*0.001)))
+    T(t) = 1/(math.log(2+t) * t*t*t)
+    T(t) = 1-(1/(1+t))
+    T(t) = 1/1+math.log(t)
+    """
+    return lambda t: (k * math.exp(-alpha * t) if t < limit else 0)
+    # return lambda t: 1/(1 + math.log(t+1))
 
+
+def simulated_annealing(current_node, maximization=False, schedule=exp_schedule()):
+    if maximization:
+        def delta_heuristic(node1, node2):
+            """
+            :param node1: current node
+            :param node2: next node
+            :return:
+            """
+            return node2.heuristic() - node1.heuristic()
+    else:
+        def delta_heuristic(node1, node2):
+            return node1.heuristic() - node2.heuristic()
+    for t in itertools.count():
+        temp = schedule(t)
+        if temp == 0 or current_node.goal_test():
+            return current_node
+        next_node = random.choice(current_node.get_near_states())
+        delta_e = delta_heuristic(current_node, next_node)
+        if delta_e > 0:
+            current_node = next_node
+        elif math.exp(delta_e / temp) < random.uniform(0, 1):
+            current_node = next_node

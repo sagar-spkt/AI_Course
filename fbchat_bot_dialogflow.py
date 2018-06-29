@@ -5,7 +5,7 @@ import apiai, codecs, json
 
 class ChatBotClient(Client):
     def apiaiCon(self):
-        self.CLIENT_ACCESS_TOKEN = 'aa877a38eb264e9c867284d151dfdssd'  # replace with your DialogFlow Client access token
+        self.CLIENT_ACCESS_TOKEN = '<DialogFlow Client Access Token>'  # replace with your DialogFlow Client access token
         self.ai = apiai.ApiAI(self.CLIENT_ACCESS_TOKEN)
         self.request = self.ai.text_request()
         self.request.lang = 'de'
