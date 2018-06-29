@@ -17,7 +17,7 @@ if __name__ == '__main__':
     size = int(input('Enter size: '))
     t = time.time()
     try:
-        solution = hill_climbing(NQueen(size=size))
+        solution = hill_climbing(NQueen(size=size), maximization=False)
         solution.display()
         print("Heuristics value of solution: ", solution.heuristic())
     except RecursionError as err:
