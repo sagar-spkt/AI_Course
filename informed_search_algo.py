@@ -1,6 +1,7 @@
 import itertools
 import math
 import random
+import copy
 from uninformed_search_algo import uniform_cost_search
 
 
@@ -81,3 +82,62 @@ def simulated_annealing(current_node, maximization=False, schedule=exp_schedule(
             current_node = next_node
         elif math.exp(delta_e / temp) < random.uniform(0, 1):
             current_node = next_node
+
+
+def random_selection(pop: list):
+    """
+    randomly select top two best parents
+    :param pop:
+    :return:
+    """
+    pop.sort(key=lambda temp: temp.fitness_function(), reverse=True)
+    top_size = int(len(pop)/3) if len(pop) >= 9 else len(pop)
+    try:
+        return random.sample(pop[:top_size], 2)
+    except ValueError:
+        """
+        if alone become hermaphrodite
+        and believe in mutation
+        otherwise give same next generation
+        """
+        return pop + pop
+
+
+def reproduce(x, y):
+    """
+    x and y should be an instance of class
+    which has staticmethod to create instance
+    from list representation
+    :param x: parent first
+    :param y: parent second
+    :return:
+    """
+    crossover = random.randint(1, x.board_size - 2)
+    x_list_repr = x.board_list_repr()
+    y_list_repr = y.board_list_repr()
+    # why a, b = b, a swapping not working
+    temp = copy.deepcopy(x_list_repr[crossover:])
+    x_list_repr[crossover:] = y_list_repr[crossover:]
+    y_list_repr[crossover:] = temp
+    return x.__class__.board_from_list(x_list_repr, parent=(x, y)), y.__class__.board_from_list(y_list_repr, parent=(x, y))
+
+
+def genetic_algorithm(population: list, limit=200):
+    if population[0].board_size not in [2, 3]:  # condition only for nqueen problem otherwise remove it
+        for i in range(limit):
+            new_population = []
+
+            j = 0
+            while j < len(population):
+                x, y = random_selection(population)
+                children = reproduce(x, y)
+                children = (children[0].mutate(), children[1].mutate())
+                new_population += children
+                j += 1
+
+            population += new_population
+            best_in_pop = population[population.index(max(population, key=lambda temp: temp.fitness_function()))]
+            if best_in_pop.termination_check():
+                return best_in_pop
+    return population[population.index(max(population, key=lambda temp: temp.fitness_function()))]
+
