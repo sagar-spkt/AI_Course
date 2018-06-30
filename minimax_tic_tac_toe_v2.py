@@ -104,13 +104,13 @@ class MiniMaxAlgo:
         best_successors = []
         for successor in successors:
             if self.game_node.current_player == 'X':
-                value = self.max_value(successor)
+                value = self.min_value(successor)
                 if value > draw_value:
                     best_successors = [successor]
                 elif value == draw_value:
                     best_successors.append(successor)
             elif self.game_node.current_player == 'O':
-                value = self.min_value(successor)
+                value = self.max_value(successor)
                 if value < draw_value:
                     best_successors = [successor]
                 elif value == draw_value:
