@@ -1,24 +1,7 @@
-import time
 import random
-import numpy as np
-from problems import NQueen
-from genetic_nqueen_adapter import NQueenGenetic
-from game import TicTacToeGame
+from questions.game import TicTacToeGame
 
-from uninformed_search_algo import (
-    breadth_first_search,
-    depth_first_search,
-    depth_limit_search,
-    uniform_cost_search,
-)
-from informed_search_algo import (
-    astar_search,
-    hill_climbing,
-    simulated_annealing,
-    genetic_algorithm,
-)
-
-from adversial_search_algo import (
+from algorithms.adversarial_search import (
     minimax_search_algo,
 )
 

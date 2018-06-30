@@ -2,7 +2,7 @@ import itertools
 import math
 import random
 import copy
-from uninformed_search_algo import uniform_cost_search
+from algorithms.uninformed_search import uniform_cost_search
 
 
 def astar_search(root_node):

@@ -1,6 +1,6 @@
 import random
 import numpy as np
-from problems import NQueen
+from questions.problems import NQueen
 
 
 class NQueenGenetic(NQueen):
