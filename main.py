@@ -1,8 +1,9 @@
 import random
-from questions.game import TicTacToeGame
+from ai_problems.game import TicTacToeGame
 
 from algorithms.adversarial_search import (
-    minimax_search_algo,
+    minimax_search,
+    alpha_beta_pruning,
 )
 
 
@@ -22,7 +23,7 @@ if __name__ == '__main__':
             break
 
         print('Computer\'s turn ')
-        best_next = minimax_search_algo(tic_tac_toe)
+        best_next = alpha_beta_pruning(tic_tac_toe)
         tic_tac_toe.place_tic_tac_toe(random.choice(best_next))
         tic_tac_toe.show()
 

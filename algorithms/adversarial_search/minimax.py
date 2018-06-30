@@ -16,7 +16,7 @@ def max_value(game_node):
     return best_value
 
 
-def minimax_search_algo(root_node):
+def minimax_search(root_node):
     """
     returns best next node at current state
     priority:
